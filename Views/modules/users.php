@@ -23,7 +23,7 @@
         <table class="table table-bordered table-striped dt-responsive tablesSystem">
           <thead>
             <tr>
-              <th>#</th>
+              <th style="width: 10px">#</th>
               <th>Nombre</th>
               <th>Usuario</th>
               <th>Foto</th>
@@ -119,6 +119,12 @@ VENTANA MODAL NUEVO USUARIO
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
           <button type="submit" class="btn btn-primary">Guardar</button>
         </div>
+
+        <?php 
+          $createUser = new UserController();
+          $createUser -> ctrCreateUser(); 
+        ?>
+
       </form>
     </div>
   </div>

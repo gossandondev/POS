@@ -2,7 +2,7 @@
 
 class UsersController{
 
-	public function ctrUserIngress(){
+	static public function ctrUserIngress(){
 		if (isset($_POST["user"])) {
 			if (preg_match('/[a-zA-Z0-9]+$/', $_POST["user"]) &&
 				preg_match('/[a-zA-Z0-9]+$/', $_POST["password"])) {
@@ -20,5 +20,9 @@ class UsersController{
 				}
 			}
 		}
+	}
+
+	static public function ctrCreateUser(){
+		
 	}
 }
