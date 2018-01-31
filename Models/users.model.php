@@ -10,4 +10,23 @@ class UsersModel{
 
 		return $stmt -> fetch();
 	}
+
+	static public function mdlInsertUser($table, $data){
+		$stmt = connection::connect()->prepare("INSERT INTO $table(Name,UserName,Password,Profile) VALUES (:Name, :UserName, :Password, :Profile)");
+
+		$stmt->bindParam(":Name", $data["Name"], PDO::PARAM_STR);
+		$stmt->bindParam(":UserName", $data["UserName"], PDO::PARAM_STR);
+		$stmt->bindParam(":Password", $data["Password"], PDO::PARAM_STR);
+		$stmt->bindParam(":Profile", $data["Profile"], PDO::PARAM_STR);
+
+		if ($stmt->execute()) {
+			return "OK";
+		}
+		else{
+			return "ERROR";
+		}
+
+		$stmt->close();
+		$stmt = null;
+	}
 }

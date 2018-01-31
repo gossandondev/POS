@@ -121,7 +121,7 @@ VENTANA MODAL NUEVO USUARIO
         </div>
 
         <?php 
-          $createUser = new UserController();
+          $createUser = new UsersController();
           $createUser -> ctrCreateUser(); 
         ?>
 
