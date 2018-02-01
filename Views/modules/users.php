@@ -106,12 +106,12 @@ VENTANA MODAL NUEVO USUARIO
                 </select>
               </div>
             </div>
-            <!-- Contraseña -->
+            <!-- Foto -->
             <div class="form-group">
               <div class="panel">Subir foto</div>
-              <input type="file" id="newPhoto" name="newPhoto">
-              <p class="help-block">Peso maximo 200mb</p>
-              <img src="Views/img/user/default/anonymous.png" class="img-thumbnail" width="100px">
+              <input type="file" class="newPhoto" name="newPhoto">
+              <p class="help-block">Peso maximo 2mb</p>
+              <img src="Views/img/user/default/anonymous.png" class="img-thumbnail preView" width="100px">
             </div>
           </div>
         </div>

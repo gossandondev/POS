@@ -11,19 +11,24 @@ class UsersModel{
 		return $stmt -> fetch();
 	}
 
-	static public function mdlInsertUser($table, $data){
-		$stmt = connection::connect()->prepare("INSERT INTO $table(Name,UserName,Password,Profile) VALUES (:Name, :UserName, :Password, :Profile)");
+	static public function mdlCreateUser($table, $data){
+		try {
+			$stmt = connection::connect()->prepare("INSERT INTO $table(Name, UserName, Password, Profile, Photo) VALUES (:Name, :UserName, :Password, :Profile, :Photo)");
 
-		$stmt->bindParam(":Name", $data["Name"], PDO::PARAM_STR);
-		$stmt->bindParam(":UserName", $data["UserName"], PDO::PARAM_STR);
-		$stmt->bindParam(":Password", $data["Password"], PDO::PARAM_STR);
-		$stmt->bindParam(":Profile", $data["Profile"], PDO::PARAM_STR);
+			$stmt->bindParam(":Name", $data["Name"], PDO::PARAM_STR);
+			$stmt->bindParam(":UserName", $data["UserName"], PDO::PARAM_STR);
+			$stmt->bindParam(":Password", $data["Password"], PDO::PARAM_STR);
+			$stmt->bindParam(":Profile", $data["Profile"], PDO::PARAM_STR);
+			$stmt->bindParam(":Photo", $data["Photo"], PDO::PARAM_STR);
 
-		if ($stmt->execute()) {
-			return "OK";
-		}
-		else{
-			return "ERROR";
+			if ($stmt->execute()) {
+				return "OK";
+			}
+			else{
+				return "ERROR";
+			}
+		} catch (Exception $e) {
+			echo 'Excepción capturada: ',  $e->getMessage(), "\n";
 		}
 
 		$stmt->close();
