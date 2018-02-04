@@ -131,4 +131,11 @@ class UsersController{
 			echo 'Excepción capturada: ',  $e->getMessage(), "\n";
 		}
 	}
+
+	static public function ctrGetUsers($item = null, $value = null){
+		$table = "users";
+		$response = UsersModel::mdlGetUsers($table, $item, $value);
+
+		return $response;
+	}
 }

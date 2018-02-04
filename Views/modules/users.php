@@ -34,20 +34,40 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Usuario administrador</td>
-              <td>Admin</td>
-              <td><img src="Views/img/user/default/anonymous.png" class="img-thumbnail" width="40px"></td>
-              <td>Administrador</td>
-              <td><button class="btn btn-success btn-xs">Activado</button></td>
-              <td>2018-01-27</td>
-              <td>
-                <div class="btn-group">
-                  <button class="btn btn-warning"><i class="fa fa-pencil"></i></button>
-                  <button class="btn btn-danger"><i class="fa fa-times"></i></button>
-                </div></td>
-            </tr>
+
+            <?php
+              $users = UsersController::ctrGetUsers();
+
+              foreach ($users as $key => $value) {
+
+                  echo '<tr>
+                          <td>'.$value["Id"].'</td>
+                          <td>'.$value["Name"].'</td>
+                          <td>'.$value["UserName"].'</td>';
+
+                          if ($value["Photo"] != "") {
+                            echo '<td><img src="'.$value["Photo"].'" class="img-thumbnail" width="40px"></td>';
+                          }else{
+                            echo '<td><img src="Views/img/user/default/anonymous.png" class="img-thumbnail" width="40px"></td>';
+                          }
+
+                          echo '<td>'.$value["Profile"].'</td>';
+
+                          if ($value['Status'] == 1) {
+                            echo '<td><button class="btn btn-success btn-xs">Activado</button></td>';
+                          }else{
+                            echo '<td><button class="btn btn-danger btn-xs">Desactivado</button></td>';
+                          }
+                          
+                          echo '<td>'.$value["LastLogin"].'</td>
+                          <td>
+                            <div class="btn-group">
+                              <button class="btn btn-warning btnEditUser" idUser="'.$value["Id"].'" data-toggle="modal" data-target="#modalEditUser"><i class="fa fa-pencil"></i></button>
+                              <button class="btn btn-danger"><i class="fa fa-times"></i></button>
+                            </div></td>
+                        </tr>';
+              }
+            ?>
           </tbody>
         </table>
       </div>
@@ -76,7 +96,7 @@ VENTANA MODAL NUEVO USUARIO
             <!-- Nombre Persona -->
             <div class="form-group">
               <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                <span class="input-group-addon" width="100px"><i class="fa fa-user"></i></span>
                 <input class="form-control input-lg" type="text" name="name" placeholder="Ingresar Nombre" required>
               </div>
             </div>
@@ -124,6 +144,76 @@ VENTANA MODAL NUEVO USUARIO
           $createUser = new UsersController();
           $createUser -> ctrCreateUser(); 
         ?>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--=====================================
+VENTANA MODAL EDITAR USUARIO
+======================================-->
+<div id="modalEditUser" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form role="form" method="post" enctype="multipart/form-data">
+        <div class="modal-header" style="background: #3c8dbc; color: white">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Editar usuario</h4>
+        </div>
+        <div class="modal-body">
+          <div class="box-body">
+            <!-- Nombre Persona -->
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon" width="100px"><i class="fa fa-user"></i></span>
+                <input class="form-control input-lg" type="text" id="editName" name="editName" value="" required>
+              </div>
+            </div>
+            <!-- Nombre Usuario -->
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                <input class="form-control input-lg" type="text" id="editUserName" name="editUserName" value="" required>
+              </div>
+            </div>
+            <!-- Contraseña -->
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                <input class="form-control input-lg" type="password" id="editPass" name="editPass" placeholder="Nueva Contraseña" required>
+              </div>
+            </div>
+            <!-- Perfil -->
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-users"></i></span>
+                <select class="form-control input-lg" name="editProfile">
+                  <option id="editProfile"></option>
+                  <option value="admin">Administrador</option>
+                  <option value="special">Especial</option>
+                  <option value="seller">Vendedor</option>
+                </select>
+              </div>
+            </div>
+            <!-- Foto -->
+            <div class="form-group">
+              <div class="panel">Subir foto</div>
+              <input type="file" class="newPhoto" name="editPhoto">
+              <p class="help-block">Peso maximo 2mb</p>
+              <img src="Views/img/user/default/anonymous.png" class="img-thumbnail preView" width="100px">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+
+        <!-- <?php 
+          $createUser = new UsersController();
+          $createUser -> ctrCreateUser(); 
+        ?> -->
 
       </form>
     </div>

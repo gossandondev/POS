@@ -3,12 +3,17 @@
 require_once "connection.php";
 
 class UsersModel{
-	static public function mdlGetUsers($table, $item, $value){
-		$stmt = Connection::connect()->prepare("SELECT * FROM $table WHERE $item = :$item");
-		$stmt -> bindParam(":".$item, $value, PDO::PARAM_STR);
-		$stmt -> execute();
-
-		return $stmt -> fetch();
+	static public function mdlGetUsers($table, $item = null, $value = null){
+		if ($item != null) {
+			$stmt = Connection::connect()->prepare("SELECT * FROM $table WHERE $item = :$item");
+			$stmt -> bindParam(":".$item, $value, PDO::PARAM_STR);
+			$stmt -> execute();
+			return $stmt -> fetch();
+		}else{
+			$stmt = Connection::connect()->prepare("SELECT * FROM $table");
+			$stmt -> execute();
+			return $stmt -> fetchAll();
+		}
 	}
 
 	static public function mdlCreateUser($table, $data){
