@@ -39,4 +39,8 @@ class UsersModel{
 		$stmt->close();
 		$stmt = null;
 	}
+
+	static public function ctrUpdateUsers(){
+		
+	}
 }

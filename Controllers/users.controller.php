@@ -38,38 +38,7 @@ class UsersController{
 					preg_match('/^[a-zA-Z0-9]+$/', $_POST["userName"]) &&
 					preg_match('/^[a-zA-Z0-9]+$/', $_POST["pass"])) {
 
-					$url = "";
-
-					if (isset($_FILES["newPhoto"]["tmp_name"])) {
-
-						list($width, $height) = getimagesize($_FILES["newPhoto"]["tmp_name"]);
-
-						$newWidth = 500;
-						$newheight = 500;
-
-						$directory = "Views/img/user/".$_POST["userName"];
-						mkdir($directory, 0755, true);
-
-						if ($_FILES["newPhoto"]["type"] == "image/jpeg") {
-							$rand = mt_rand(100,999);
-							$url = $directory."/".$rand.".jpg";
-							$fileOrigin = imagecreatefromjpeg($_FILES["newPhoto"]["tmp_name"]);
-							$newSizes = imagecreatetruecolor($newWidth, $newheight);
-
-							imagecopyresized($newSizes, $fileOrigin, 0, 0, 0, 0, $newWidth, $newheight, $width, $height);
-							imagejpeg($newSizes, $url);
-						}
-
-						if ($_FILES["newPhoto"]["type"] == "image/png") {
-							$rand = mt_rand(100,999);
-							$url = $directory."/".$rand.".png";
-							$fileOrigin = imagecreatefrompng($_FILES["newPhoto"]["tmp_name"]);
-							$newSizes = imagecreatetruecolor($newWidth, $newheight);
-
-							imagecopyresized($newSizes, $fileOrigin, 0, 0, 0, 0, $newWidth, $newheight, $width, $height);
-							imagepng($newSizes, $url);
-						}
-					}
+					$url = self::ctrSavePhoto();
 
 					$table = "users";
 					$cryptPass = crypt($_POST["pass"],'$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
@@ -137,5 +106,51 @@ class UsersController{
 		$response = UsersModel::mdlGetUsers($table, $item, $value);
 
 		return $response;
+	}
+
+	static public function ctrUpdateUsers(){
+		if (isset($_POST["updateUser"])) {
+			if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["editName"])) {
+
+			}
+		}
+	}
+
+	static public function ctrSavePhoto(){
+
+		$url = "";
+
+		if (isset($_FILES["newPhoto"]["tmp_name"])) {
+
+			list($width, $height) = getimagesize($_FILES["newPhoto"]["tmp_name"]);
+
+			$newWidth = 500;
+			$newheight = 500;
+
+			$directory = "Views/img/user/".$_POST["userName"];
+			mkdir($directory, 0755, true);
+
+			if ($_FILES["newPhoto"]["type"] == "image/jpeg") {
+				$rand = mt_rand(100,999);
+				$url = $directory."/".$rand.".jpg";
+				$fileOrigin = imagecreatefromjpeg($_FILES["newPhoto"]["tmp_name"]);
+				$newSizes = imagecreatetruecolor($newWidth, $newheight);
+
+				imagecopyresized($newSizes, $fileOrigin, 0, 0, 0, 0, $newWidth, $newheight, $width, $height);
+				imagejpeg($newSizes, $url);
+			}
+
+			if ($_FILES["newPhoto"]["type"] == "image/png") {
+				$rand = mt_rand(100,999);
+				$url = $directory."/".$rand.".png";
+				$fileOrigin = imagecreatefrompng($_FILES["newPhoto"]["tmp_name"]);
+				$newSizes = imagecreatetruecolor($newWidth, $newheight);
+
+				imagecopyresized($newSizes, $fileOrigin, 0, 0, 0, 0, $newWidth, $newheight, $width, $height);
+				imagepng($newSizes, $url);
+			}
+
+			return $url;
+		}
 	}
 }

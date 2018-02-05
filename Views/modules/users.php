@@ -174,7 +174,7 @@ VENTANA MODAL EDITAR USUARIO
             <div class="form-group">
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                <input class="form-control input-lg" type="text" id="editUserName" name="editUserName" value="" required>
+                <input class="form-control input-lg" type="text" id="editUserName" name="editUserName" value="" readonly>
               </div>
             </div>
             <!-- Contraseña -->
@@ -182,6 +182,7 @@ VENTANA MODAL EDITAR USUARIO
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                 <input class="form-control input-lg" type="password" id="editPass" name="editPass" placeholder="Nueva Contraseña" required>
+                <input type="hidden" id="currentPass" name="currentPass">
               </div>
             </div>
             <!-- Perfil -->
@@ -189,7 +190,7 @@ VENTANA MODAL EDITAR USUARIO
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-users"></i></span>
                 <select class="form-control input-lg" name="editProfile">
-                  <option id="editProfile"></option>
+                  <option value="" id="editProfile"></option>
                   <option value="admin">Administrador</option>
                   <option value="special">Especial</option>
                   <option value="seller">Vendedor</option>
@@ -202,6 +203,7 @@ VENTANA MODAL EDITAR USUARIO
               <input type="file" class="newPhoto" name="editPhoto">
               <p class="help-block">Peso maximo 2mb</p>
               <img src="Views/img/user/default/anonymous.png" class="img-thumbnail preView" width="100px">
+              <input type="hidden" id="currentPhoto" name="currentPhoto">
             </div>
           </div>
         </div>
@@ -210,10 +212,10 @@ VENTANA MODAL EDITAR USUARIO
           <button type="submit" class="btn btn-primary">Guardar</button>
         </div>
 
-        <!-- <?php 
-          $createUser = new UsersController();
-          $createUser -> ctrCreateUser(); 
-        ?> -->
+        <?php 
+          $updateUser = new UsersController();
+          $updateUser -> ctrUpdateUsers(); 
+        ?> 
 
       </form>
     </div>

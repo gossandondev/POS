@@ -23,7 +23,7 @@ $(".newPhoto").change(function(){
 
 		$(imageData).on("load", function(event){
 			var imageUrl = event.target.result;
-
+			console.log("URL: ", imageUrl)
 			$(".preView").attr("src", imageUrl);
 		})
 	}
@@ -48,6 +48,15 @@ $(".btnEditUser").click(function(){
 			$("#editName").val(response["Name"]);
 			$("#editUserName").val(response["UserName"]);
 			$("#editProfile").html(response["Profile"]);
+			$("#editProfile").val(response["Profile"]);
+			$("#currenPass").val(response["Password"]);
+			$("#currenPhoto").val(response["Photo"]);
+
+			if (response["Photo"] != "") {
+				$(".preView").attr("src", response["Photo"]);
+			}else{
+				$(".preView").attr("src", "Views/img/user/default/anonymous.png");
+			}
 		},
 		error: function(result){
 			console.log("error", result);
