@@ -1,5 +1,7 @@
 <?php
 
+require_once "message.controller.php";
+
 class UsersController{
 
 	static public function ctrUserIngress(){
@@ -14,16 +16,20 @@ class UsersController{
 				$response = UsersModel::mdlGetUsers($table, $item, $value); 
 
 				if ($response["UserName"] == $_POST["user"] && $response["Password"] == $cryptPass){
+					if ($response["Status"] == 1) {
+						$_SESSION["login"] = "ok";
+						$_SESSION["Id"] = $response["Id"];
+						$_SESSION["Name"] = $response["Name"]; 
+						$_SESSION["UserName"] = $response["UserName"];
+						$_SESSION["Profile"] = $response["Profile"];
+						$_SESSION["Photo"] = $response["Photo"];
+						$_SESSION["Status"] = $response["Status"];
 
-					$_SESSION["login"] = "ok";
-					$_SESSION["Id"] = $response["Id"];
-					$_SESSION["Name"] = $response["Name"]; 
-					$_SESSION["UserName"] = $response["UserName"];
-					$_SESSION["Profile"] = $response["Profile"];
-					$_SESSION["Photo"] = $response["Photo"];
-					$_SESSION["Status"] = $response["Status"];
-
-					echo '<script>window.location = "home"</script>';
+						echo '<script>window.location = "home"</script>';
+					}else{
+						echo '<br><div class="alert alert-danger">El usuario no se encuentra activado.</div>'; 
+					}
+					
 				}else{
 					echo '<br><div class="alert alert-danger">Error al ingresar, vuelva a intentarlo</div>'; 
 				}
@@ -32,125 +38,135 @@ class UsersController{
 	}
 
 	static public function ctrCreateUser(){
-		try {
-			if (isset($_POST["name"])) {
-				if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["name"]) &&
-					preg_match('/^[a-zA-Z0-9]+$/', $_POST["userName"]) &&
-					preg_match('/^[a-zA-Z0-9]+$/', $_POST["pass"])) {
+		if (isset($_POST["name"])) {
+			if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["name"]) &&
+				preg_match('/^[a-zA-Z0-9]+$/', $_POST["userName"]) &&
+				preg_match('/^[a-zA-Z0-9]+$/', $_POST["pass"])) {
 
-					$url = self::ctrSavePhoto();
+				$url = self::ctrSavePhoto("newPhoto", "userName");
 
-					$table = "users";
-					$cryptPass = crypt($_POST["pass"],'$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
-					$data = array("Name" => $_POST["name"],
-								  "UserName" => $_POST["userName"],
-								  "Password" => $cryptPass,
-								  "Profile" => $_POST["profile"],
-								  "Photo" => $url);
+				$table = "users";
+				$cryptPass = crypt($_POST["pass"],'$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
+				$data = array("Name" => $_POST["name"],
+							  "UserName" => $_POST["userName"],
+							  "Password" => $cryptPass,
+							  "Profile" => $_POST["profile"],
+							  "Photo" => $url);
 
-					$response = UsersModel::mdlCreateUser($table, $data);
+				$response = UsersModel::mdlCreateUser($table, $data);
 
-					if ($response == "OK") {
-						echo '<script>
-							swal({
-								type: "success",
-								title: "El usuario ha sido ingresado correctamente.",
-								showConfirmButton: true,
-								confirmButtonText: "Cerrar",
-								closeOnConfirm: false
-							}).then((result)=>{
-								if(result.value){
-									window.location = "users";
-								}
-							})
-						  </script>';
-					}else{
-						echo '<script>
-							swal({
-								type: "error",
-								title: "El usuario NO ha sido ingresado correctamente.",
-								showConfirmButton: true,
-								confirmButtonText: "Cerrar",
-								closeOnConfirm: false
-							}).then((result)=>{
-								if(result.value){
-									window.location = "users";
-								}
-							})
-						  </script>';
-					}
-				}
-				else{
-					echo '<script>
-							swal({
-								type: "error",
-								title: "El usuario no puede ir vacio o con caracteres especiales.",
-								showConfirmButton: true,
-								confirmButtonText: "Cerrar",
-								closeOnConfirm: false
-							}).then((result)=>{
-								if(result.value){
-									window.location = "users";
-								}
-							})
-						  </script>';
+				if ($response == "OK") {
+					MessageController::ctrSwalMessage("success",
+													  "El usuario ha sido ingresado correctamente.",
+													  "Cerrar",
+													  "users");
+				}else{
+					MessageController::ctrSwalMessage("error",
+													  "El usuario NO ha sido ingresado correctamente.",
+													  "Cerrar",
+													  "users");
 				}
 			}
-		} catch (Exception $e) {
-			echo 'Excepción capturada: ',  $e->getMessage(), "\n";
+			else{
+				MessageController::ctrSwalMessage("error",
+													  "El usuario no puede ir vacio o con caracteres especiales.",
+													  "Cerrar",
+													  "users");
+			}
 		}
 	}
 
 	static public function ctrGetUsers($item = null, $value = null){
 		$table = "users";
 		$response = UsersModel::mdlGetUsers($table, $item, $value);
-
+	
 		return $response;
 	}
 
 	static public function ctrUpdateUsers(){
-		if (isset($_POST["updateUser"])) {
+		if (isset($_POST["editUserName"])) {
 			if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["editName"])) {
 
+				$url = self::ctrSavePhoto("editPhoto", "editUserName");
+
+				$table = "users";
+				
+				if ($_POST["editPass"] != "") {
+					if (preg_match('/^[a-zA-Z0-9]+$/', $_POST["editPass"])) {
+						$pass = crypt($_POST["editPass"],'$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
+					}else{
+						MessageController::ctrSwalMessage("error",
+													      "La contraseña no puede llevar caracteres especiales.",
+													      "Cerrar",
+													      "users");
+					}
+				}else{
+					$pass = $_POST["currentPass"];
+				}
+				
+				$data = array("Name" => $_POST["editName"],
+							  "UserName" => $_POST["editUserName"],
+							  "Password" => $pass,
+							  "Profile" => $_POST["editProfile"],
+							  "Photo" => $url);
+
+				$response = UsersModel::mdlUpdateUsers($table, $data);
+
+				if ($response == "OK") {
+					MessageController::ctrSwalMessage("success",
+													  "El usuario ha sido actualizado correctamente.",
+													  "Cerrar",
+													  "users");
+				}else{
+					MessageController::ctrSwalMessage("error",
+													  "El usuario NO ha podido ser actualizado correctamente.",
+													  "Cerrar",
+													  "users");
+				}
 			}
 		}
 	}
 
-	static public function ctrSavePhoto(){
+	static public function ctrSavePhoto($attrPhoto, $attrUserName){
 
-		$url = "";
+		$url = $_POST["currentPhoto"];
 
-		if (isset($_FILES["newPhoto"]["tmp_name"])) {
+		if (isset($_FILES[$attrPhoto]["tmp_name"]) && (!empty($_FILES[$attrPhoto]["tmp_name"]))) {
 
-			list($width, $height) = getimagesize($_FILES["newPhoto"]["tmp_name"]);
+			list($width, $height) = getimagesize($_FILES[$attrPhoto]["tmp_name"]);
 
 			$newWidth = 500;
 			$newheight = 500;
 
-			$directory = "Views/img/user/".$_POST["userName"];
-			mkdir($directory, 0755, true);
+			$directory = "Views/img/user/".$_POST[$attrUserName];
 
-			if ($_FILES["newPhoto"]["type"] == "image/jpeg") {
+			if (!empty($_POST["currentPhoto"])) {
+				unlink($_POST["currentPhoto"]);
+			}else{
+				mkdir($directory, 0755, true);
+			}
+
+			if ($_FILES[$attrPhoto]["type"] == "image/jpeg") {
 				$rand = mt_rand(100,999);
 				$url = $directory."/".$rand.".jpg";
-				$fileOrigin = imagecreatefromjpeg($_FILES["newPhoto"]["tmp_name"]);
+				$fileOrigin = imagecreatefromjpeg($_FILES[$attrPhoto]["tmp_name"]);
 				$newSizes = imagecreatetruecolor($newWidth, $newheight);
 
 				imagecopyresized($newSizes, $fileOrigin, 0, 0, 0, 0, $newWidth, $newheight, $width, $height);
 				imagejpeg($newSizes, $url);
 			}
 
-			if ($_FILES["newPhoto"]["type"] == "image/png") {
+			if ($_FILES[$attrPhoto]["type"] == "image/png") {
 				$rand = mt_rand(100,999);
 				$url = $directory."/".$rand.".png";
-				$fileOrigin = imagecreatefrompng($_FILES["newPhoto"]["tmp_name"]);
+				$fileOrigin = imagecreatefrompng($_FILES[$attrPhoto]["tmp_name"]);
 				$newSizes = imagecreatetruecolor($newWidth, $newheight);
 
 				imagecopyresized($newSizes, $fileOrigin, 0, 0, 0, 0, $newWidth, $newheight, $width, $height);
 				imagepng($newSizes, $url);
 			}
-
-			return $url;
 		}
+
+		return $url;
 	}
 }

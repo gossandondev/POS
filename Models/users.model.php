@@ -17,30 +17,62 @@ class UsersModel{
 	}
 
 	static public function mdlCreateUser($table, $data){
-		try {
-			$stmt = connection::connect()->prepare("INSERT INTO $table(Name, UserName, Password, Profile, Photo) VALUES (:Name, :UserName, :Password, :Profile, :Photo)");
+		
+		$stmt = connection::connect()->prepare("INSERT INTO $table(Name, UserName, Password, Profile, Photo) VALUES (:Name, :UserName, :Password, :Profile, :Photo)");
 
-			$stmt->bindParam(":Name", $data["Name"], PDO::PARAM_STR);
-			$stmt->bindParam(":UserName", $data["UserName"], PDO::PARAM_STR);
-			$stmt->bindParam(":Password", $data["Password"], PDO::PARAM_STR);
-			$stmt->bindParam(":Profile", $data["Profile"], PDO::PARAM_STR);
-			$stmt->bindParam(":Photo", $data["Photo"], PDO::PARAM_STR);
+		$stmt->bindParam(":Name", $data["Name"], PDO::PARAM_STR);
+		$stmt->bindParam(":UserName", $data["UserName"], PDO::PARAM_STR);
+		$stmt->bindParam(":Password", $data["Password"], PDO::PARAM_STR);
+		$stmt->bindParam(":Profile", $data["Profile"], PDO::PARAM_STR);
+		$stmt->bindParam(":Photo", $data["Photo"], PDO::PARAM_STR);
 
-			if ($stmt->execute()) {
-				return "OK";
-			}
-			else{
-				return "ERROR";
-			}
-		} catch (Exception $e) {
-			echo 'Excepción capturada: ',  $e->getMessage(), "\n";
+		if ($stmt->execute()) {
+			return "OK";
+		}
+		else{
+			return "ERROR";
 		}
 
 		$stmt->close();
 		$stmt = null;
 	}
 
-	static public function ctrUpdateUsers(){
-		
+	static public function mdlUpdateUsers($table, $data){
+	
+		$stmt = connection::connect()->prepare("UPDATE $table SET Name = :Name, Password = :Password, Profile = :Profile, Photo = :Photo WHERE UserName = :UserName");
+
+		$stmt->bindParam(":Name", $data["Name"], PDO::PARAM_STR);
+		$stmt->bindParam(":UserName", $data["UserName"], PDO::PARAM_STR);
+		$stmt->bindParam(":Password", $data["Password"], PDO::PARAM_STR);
+		$stmt->bindParam(":Profile", $data["Profile"], PDO::PARAM_STR);
+		$stmt->bindParam(":Photo", $data["Photo"], PDO::PARAM_STR);
+
+		if ($stmt->execute()) {
+			return "OK";
+		}
+		else{
+			return "ERROR";
+		}
+
+		$stmt->close();
+		$stmt = null;
+	}
+
+	static public function mdlUpdateUsersWithParameters($table, $setItem, $setValue, $whereItem, $whereValue){
+
+		$stmt = connection::connect()->prepare("UPDATE $table SET $setItem = :$setItem WHERE $whereItem = :$whereItem");
+
+		$stmt -> bindParam(":".$setItem, $setValue, PDO::PARAM_STR);
+		$stmt -> bindParam(":".$whereItem, $whereValue, PDO::PARAM_STR);
+
+		if ($stmt->execute()) {
+			return "OK";
+		}
+		else{
+			return "ERROR";
+		}
+
+		$stmt->close();
+		$stmt = null;
 	}
 }

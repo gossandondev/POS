@@ -54,9 +54,9 @@
                           echo '<td>'.$value["Profile"].'</td>';
 
                           if ($value['Status'] == 1) {
-                            echo '<td><button class="btn btn-success btn-xs">Activado</button></td>';
+                            echo '<td><button class="btn btn-success btn-xs btnActive" idUser="'.$value["Id"].'" userStatus="0">Activado</button></td>';
                           }else{
-                            echo '<td><button class="btn btn-danger btn-xs">Desactivado</button></td>';
+                            echo '<td><button class="btn btn-danger btn-xs btnActive" idUser="'.$value["Id"].'" userStatus="1">Desactivado</button></td>';
                           }
                           
                           echo '<td>'.$value["LastLogin"].'</td>
@@ -120,9 +120,9 @@ VENTANA MODAL NUEVO USUARIO
                 <span class="input-group-addon"><i class="fa fa-users"></i></span>
                 <select class="form-control input-lg" name="profile">
                   <option value="">Seleccionar Perfil</option>
-                  <option value="admin">Administrador</option>
-                  <option value="special">Especial</option>
-                  <option value="seller">Vendedor</option>
+                  <option value="Administrador">Administrador</option>
+                  <option value="Especial">Especial</option>
+                  <option value="Vendedor">Vendedor</option>
                 </select>
               </div>
             </div>
@@ -181,7 +181,7 @@ VENTANA MODAL EDITAR USUARIO
             <div class="form-group">
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                <input class="form-control input-lg" type="password" id="editPass" name="editPass" placeholder="Nueva Contraseña" required>
+                <input class="form-control input-lg" type="password" id="editPass" name="editPass" placeholder="Nueva Contraseña">
                 <input type="hidden" id="currentPass" name="currentPass">
               </div>
             </div>
@@ -191,9 +191,9 @@ VENTANA MODAL EDITAR USUARIO
                 <span class="input-group-addon"><i class="fa fa-users"></i></span>
                 <select class="form-control input-lg" name="editProfile">
                   <option value="" id="editProfile"></option>
-                  <option value="admin">Administrador</option>
-                  <option value="special">Especial</option>
-                  <option value="seller">Vendedor</option>
+                  <option value="Administrador">Administrador</option>
+                  <option value="Especial">Especial</option>
+                  <option value="Vendedor">Vendedor</option>
                 </select>
               </div>
             </div>
