@@ -63,7 +63,7 @@
                           <td>
                             <div class="btn-group">
                               <button class="btn btn-warning btnEditUser" idUser="'.$value["Id"].'" data-toggle="modal" data-target="#modalEditUser"><i class="fa fa-pencil"></i></button>
-                              <button class="btn btn-danger"><i class="fa fa-times"></i></button>
+                              <button class="btn btn-danger btnDeleteUser" userId="'.$value["Id"].'" userPhoto="'.$value["Photo"].'"><i class="fa fa-times"></i></button>
                             </div></td>
                         </tr>';
               }
@@ -104,7 +104,7 @@ VENTANA MODAL NUEVO USUARIO
             <div class="form-group">
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                <input class="form-control input-lg" type="text" name="userName" placeholder="Ingresar Usuario" required>
+                <input class="form-control input-lg" type="text" name="userName" id="userName" placeholder="Ingresar Usuario" required>
               </div>
             </div>
             <!-- Contraseña -->
@@ -221,3 +221,8 @@ VENTANA MODAL EDITAR USUARIO
     </div>
   </div>
 </div>
+
+<?php 
+  $deleteUser = new UsersController();
+  $deleteUser -> ctrDeleteUser(); 
+?> 

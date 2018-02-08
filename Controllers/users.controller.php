@@ -25,7 +25,19 @@ class UsersController{
 						$_SESSION["Photo"] = $response["Photo"];
 						$_SESSION["Status"] = $response["Status"];
 
-						echo '<script>window.location = "home"</script>';
+						date_default_timezone_set("America/Santiago");
+						$currentDateTime = date("Y-m-d H:i:s");
+
+						$response = UsersModel::mdlUpdateUsersWithParameters("users",
+																			 "LastLogin",
+																			 $currentDateTime,
+																			 "Id",
+																			 $response["Id"]);
+
+						if ($response == "OK") {
+							echo '<script>window.location = "home"</script>';
+						}
+
 					}else{
 						echo '<br><div class="alert alert-danger">El usuario no se encuentra activado.</div>'; 
 					}
@@ -168,5 +180,23 @@ class UsersController{
 		}
 
 		return $url;
+	}
+
+	static public function ctrDeleteUser(){
+		if (isset($_GET["userId"])) {
+			if ($_GET["userPhoto"] != "") {
+				unlink($_GET["userPhoto"]);
+				rmdir(pathinfo($_GET["userPhoto"])["dirname"]);
+			}
+
+			$response = UsersModel::mdlDeleteUser("users", $_GET["userId"]);
+
+			if ($response == "OK") {
+				MessageController::ctrSwalMessage("success",
+												  "El usuario ha sido eliminado correctamente.",
+												  "Cerrar",
+												  "users");
+			}
+		}
 	}
 }

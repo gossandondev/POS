@@ -75,4 +75,21 @@ class UsersModel{
 		$stmt->close();
 		$stmt = null;
 	}
+
+	static public function mdlDeleteUser($table, $data){
+
+		$stmt = connection::connect()->prepare("DELETE FROM $table WHERE Id = :Id");
+
+		$stmt -> bindParam(":Id", $data, PDO::PARAM_STR);
+
+		if ($stmt->execute()) {
+			return "OK";
+		}
+		else{
+			return "ERROR";
+		}
+
+		$stmt->close();
+		$stmt = null;
+	}
 }

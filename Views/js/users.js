@@ -97,3 +97,49 @@ $(".btnActive").click(function(){
 		$(this).attr("userStatus", 0);
 	}
 })
+
+$("#userName").change(function(){
+	var userName = $(this).val();
+
+	var data = new FormData();
+	data.append("userName", userName)
+
+	$(".alert").remove();
+
+	$.ajax({
+		url: "Ajax/users.ajax.php",
+		method: "POST",
+		data: data,
+		cache: false,
+		contentType: false,
+		processData: false,
+		dataType: "json",
+		success: function(response){
+			if (response) {
+				$("#userName").parent().after('<div class="alert alert-warning">Este usuario ya existe.</div>');
+				$("#userName").val("");
+			}
+		}
+	})
+})
+
+$(".btnDeleteUser").click(function(){
+
+	var userId = $(this).attr("userId");
+	var userPhoto = $(this).attr("userPhoto");
+
+	swal({
+		title: "Eliminar Usuario",
+		text: "Esta seguro de borrar el usuario?",
+		type: "warning",
+		showCancelButton: true,
+		confirmButtonColor: "#3085d6",
+		cancelButtonColor: "#d33",
+		cancelButtonText: "Cancelar",
+		confirmButtonText: "Eliminar"
+	}).then((result)=>{
+		if (result.value) {
+			window.location = "index.php?index=users&userId="+ userId + "&userPhoto=" + userPhoto;
+		}
+	})
+})
