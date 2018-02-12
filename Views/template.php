@@ -137,6 +137,7 @@ session_start();
 
 <script src="Views/js/template.js"></script>
 <script src="Views/js/users.js"></script>
+<script src="Views/js/categories.js"></script>
 
 </body>
 </html>

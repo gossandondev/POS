@@ -1,2 +1,1 @@
-1.- Al crear un usuario sin foto, el sistema no me deja crearlo, sindo que debe dejar crearlo.
-2.- Al crear un usuario y le ingreso parametros a los campos, y no guardo el usuario, solo cierro la ventana, al volver apretar el boton nuevo ususario, los datos siguen estando ahi.
+1.- Al crear un usuario y le ingreso parametros a los campos, y no guardo el usuario, solo cierro la ventana, al volver apretar el boton nuevo ususario, los datos siguen estando ahi.

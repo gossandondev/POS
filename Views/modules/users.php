@@ -30,7 +30,7 @@
               <th>Perfil</th>
               <th>Estado</th>
               <th>Ultimo login</th>
-              <th>Acciones</th>
+              <th style="width: 20px">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -41,7 +41,7 @@
               foreach ($users as $key => $value) {
 
                   echo '<tr>
-                          <td>'.$value["Id"].'</td>
+                          <td>'.($key+1).'</td>
                           <td>'.$value["Name"].'</td>
                           <td>'.$value["UserName"].'</td>';
 
@@ -62,8 +62,8 @@
                           echo '<td>'.$value["LastLogin"].'</td>
                           <td>
                             <div class="btn-group">
-                              <button class="btn btn-warning btnEditUser" idUser="'.$value["Id"].'" data-toggle="modal" data-target="#modalEditUser"><i class="fa fa-pencil"></i></button>
-                              <button class="btn btn-danger btnDeleteUser" userId="'.$value["Id"].'" userPhoto="'.$value["Photo"].'"><i class="fa fa-times"></i></button>
+                              <button class="btn btn-warning btnEditUser" idUser="'.$value["Id"].'" data-toggle="modal" data-target="#modalEditUser" title="Editar"><i class="fa fa-pencil"></i></button>
+                              <button class="btn btn-danger btnDeleteUser" userId="'.$value["Id"].'" userPhoto="'.$value["Photo"].'"><i class="fa fa-times" title="Eliminar"></i></button>
                             </div></td>
                         </tr>';
               }
@@ -71,11 +71,6 @@
           </tbody>
         </table>
       </div>
-    
-      <div class="box-footer">
-        Footer
-      </div>
-    
     </div>
   </section>
 </div>
@@ -96,28 +91,28 @@ VENTANA MODAL NUEVO USUARIO
             <!-- Nombre Persona -->
             <div class="form-group">
               <div class="input-group">
-                <span class="input-group-addon" width="100px"><i class="fa fa-user"></i></span>
+                  <span class="input-group-addon"><i class="fa fa-id-card fa-fw"></i></span>
                 <input class="form-control input-lg" type="text" name="name" placeholder="Ingresar Nombre" required>
               </div>
             </div>
             <!-- Nombre Usuario -->
             <div class="form-group">
               <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                <span class="input-group-addon"><i class="fa fa-user-circle fa-fw"></i></span>
                 <input class="form-control input-lg" type="text" name="userName" id="userName" placeholder="Ingresar Usuario" required>
               </div>
             </div>
             <!-- Contraseña -->
             <div class="form-group">
               <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                <span class="input-group-addon"><i class="fa fa-lock fa-fw"></i></span>
                 <input class="form-control input-lg" type="password" name="pass" placeholder="Ingresar Contraseña" required>
               </div>
             </div>
             <!-- Perfil -->
             <div class="form-group">
               <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-users"></i></span>
+                <span class="input-group-addon"><i class="fa fa-bars fa-fw"></i></span>
                 <select class="form-control input-lg" name="profile">
                   <option value="">Seleccionar Perfil</option>
                   <option value="Administrador">Administrador</option>
@@ -128,7 +123,7 @@ VENTANA MODAL NUEVO USUARIO
             </div>
             <!-- Foto -->
             <div class="form-group">
-              <div class="panel">Subir foto</div>
+              <div class="panel">Subir foto <i class="fa fa-camera-retro fa-fw"></i></div>
               <input type="file" class="newPhoto" name="newPhoto">
               <p class="help-block">Peso maximo 2mb</p>
               <img src="Views/img/user/default/anonymous.png" class="img-thumbnail preView" width="100px">
@@ -166,21 +161,21 @@ VENTANA MODAL EDITAR USUARIO
             <!-- Nombre Persona -->
             <div class="form-group">
               <div class="input-group">
-                <span class="input-group-addon" width="100px"><i class="fa fa-user"></i></span>
+                <span class="input-group-addon" width="100px"><i class="fa fa-id-card fa-fw"></i></span>
                 <input class="form-control input-lg" type="text" id="editName" name="editName" value="" required>
               </div>
             </div>
             <!-- Nombre Usuario -->
             <div class="form-group">
               <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                <span class="input-group-addon"><i class="fa fa-user-circle fa-fw"></i></span>
                 <input class="form-control input-lg" type="text" id="editUserName" name="editUserName" value="" readonly>
               </div>
             </div>
             <!-- Contraseña -->
             <div class="form-group">
               <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                <span class="input-group-addon"><i class="fa fa-lock fa-fw"></i></span>
                 <input class="form-control input-lg" type="password" id="editPass" name="editPass" placeholder="Nueva Contraseña">
                 <input type="hidden" id="currentPass" name="currentPass">
               </div>
@@ -188,7 +183,7 @@ VENTANA MODAL EDITAR USUARIO
             <!-- Perfil -->
             <div class="form-group">
               <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-users"></i></span>
+                <span class="input-group-addon"><i class="fa fa-bars fa-fw"></i></span>
                 <select class="form-control input-lg" name="editProfile">
                   <option value="" id="editProfile"></option>
                   <option value="Administrador">Administrador</option>
@@ -199,7 +194,7 @@ VENTANA MODAL EDITAR USUARIO
             </div>
             <!-- Foto -->
             <div class="form-group">
-              <div class="panel">Subir foto</div>
+              <div class="panel">Subir foto <i class="fa fa-camera-retro fa-fw"></i></div>
               <input type="file" class="newPhoto" name="editPhoto">
               <p class="help-block">Peso maximo 2mb</p>
               <img src="Views/img/user/default/anonymous.png" class="img-thumbnail preView" width="100px">

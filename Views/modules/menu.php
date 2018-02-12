@@ -9,25 +9,25 @@
 			</li>
 			<li>
 				<a href="users">
-					<i class="fa fa-user"></i>
+					<i class="fa fa-user-circle"></i>
 					<span>Usuarios</span>
 				</a>
 			</li>
 			<li>
 				<a href="categories">
-					<i class="fa fa-product-hunt"></i>
+					<i class="fa fa-clipboard"></i>
 					<span>Categorias</span>
 				</a>
 			</li>
 			<li>
 				<a href="products">
-					<i class="fa fa-user"></i>
+					<i class="fa fa-product-hunt"></i>
 					<span>Productos</span>
 				</a>
 			</li>
 			<li>
 				<a href="customers">
-					<i class="fa fa-user"></i>
+					<i class="fa fa-id-badge"></i>
 					<span>Clientes</span>
 				</a>
 			</li>

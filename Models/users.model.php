@@ -30,7 +30,7 @@ class UsersModel{
 			return "OK";
 		}
 		else{
-			return "ERROR";
+			return $stmt->errorInfo();
 		}
 
 		$stmt->close();

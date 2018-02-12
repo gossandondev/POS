@@ -4,19 +4,27 @@ require_once "message.controller.php";
 
 class UsersController{
 
+	/**
+	* Verifica si el conjunto usuario/contraseña igresados, exista en la base de datos.
+	* Si encuentra registro en la base de datos, lo deja ingresar al sistema.
+	*/
 	static public function ctrUserIngress(){
+		//Se verifica si viene la variable POST.
 		if (isset($_POST["user"])) {
+			//Se valida que las variables user y contraseña no tenga caracteres raros.
 			if (preg_match('/[a-zA-Z0-9]+$/', $_POST["user"]) &&
 				preg_match('/[a-zA-Z0-9]+$/', $_POST["password"])) {
 				
-				$table = "users";
-				$item = "userName";
-				$value = $_POST["user"];
+				//Se encripta la contraseña con Blowfish.
 				$cryptPass = crypt($_POST["password"],'$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
-				$response = UsersModel::mdlGetUsers($table, $item, $value); 
+				//Se consulta la existencia de usuario/contraseña en la base de datos.
+				$response = UsersModel::mdlGetUsers("users", "userName", $_POST["user"]); 
 
+				//Se valida si lo ingresado coincide con lo que trae de la base de datos.
 				if ($response["UserName"] == $_POST["user"] && $response["Password"] == $cryptPass){
+					//Se valida si el usuario esta activado en el sistema.
 					if ($response["Status"] == 1) {
+						//Se crean las variables de sesiones.
 						$_SESSION["login"] = "ok";
 						$_SESSION["Id"] = $response["Id"];
 						$_SESSION["Name"] = $response["Name"]; 
@@ -25,65 +33,81 @@ class UsersController{
 						$_SESSION["Photo"] = $response["Photo"];
 						$_SESSION["Status"] = $response["Status"];
 
+						//Se asigna la zona horaria del sistema.
 						date_default_timezone_set("America/Santiago");
+						//Se rescata la fecha y hora actual.
 						$currentDateTime = date("Y-m-d H:i:s");
 
+						//Se actualiza la fecha del ultimo login.
 						$response = UsersModel::mdlUpdateUsersWithParameters("users",
 																			 "LastLogin",
 																			 $currentDateTime,
 																			 "Id",
 																			 $response["Id"]);
 
+						//Si la actualizacion de la fecha del ultimo login sale bien, lo deja pasar al sistema.
 						if ($response == "OK") {
 							echo '<script>window.location = "home"</script>';
 						}
 
 					}else{
+						//Si el usuario no esta activado manda una alerta en el formulario.
 						echo '<br><div class="alert alert-danger">El usuario no se encuentra activado.</div>'; 
 					}
 					
 				}else{
+					//Si no encuentra coincidencias en la base de datos manda alerta en el formulario.
 					echo '<br><div class="alert alert-danger">Error al ingresar, vuelva a intentarlo</div>'; 
 				}
 			}
 		}
 	}
 
+	/**
+	* Crea un usuario nuevo en el sistema.
+	*/
 	static public function ctrCreateUser(){
+		//Se verifica si viene la variable POST.
 		if (isset($_POST["name"])) {
+			//Se valida que las variables nombre, user y contraseña no tenga caracteres raros.
 			if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["name"]) &&
 				preg_match('/^[a-zA-Z0-9]+$/', $_POST["userName"]) &&
 				preg_match('/^[a-zA-Z0-9]+$/', $_POST["pass"])) {
 
+				//Se rescata la ruta de la foto que se adjunto en el formulario.
 				$url = self::ctrSavePhoto("newPhoto", "userName");
 
-				$table = "users";
+				//Se encripta la contraseña con Blowfish.
 				$cryptPass = crypt($_POST["pass"],'$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
+				//Se crea una variable array que almacena toda la informacion del formmulario.
 				$data = array("Name" => $_POST["name"],
 							  "UserName" => $_POST["userName"],
 							  "Password" => $cryptPass,
 							  "Profile" => $_POST["profile"],
 							  "Photo" => $url);
 
-				$response = UsersModel::mdlCreateUser($table, $data);
+				//Se crea el usuario en la base de datos.
+				$response = UsersModel::mdlCreateUser("users", $data);
 
+				//Si se creo el usuario, se envia un mensaje al usuario informando que se creo correctamente.
 				if ($response == "OK") {
 					MessageController::ctrSwalMessage("success",
 													  "El usuario ha sido ingresado correctamente.",
 													  "Cerrar",
 													  "users");
 				}else{
+					//Si no se cargo correctamente le informa al usuario que hubo un problema con la creacion.
 					MessageController::ctrSwalMessage("error",
-													  "El usuario NO ha sido ingresado correctamente.",
+													  "El usuario NO ha sido ingresado correctamente.".$response[2],
 													  "Cerrar",
 													  "users");
 				}
-			}
-			else{
+			}else{
+				//Si ingresaron caracteres raros en los campos del nombre, usuario o contraseña le manda un mensaje.
 				MessageController::ctrSwalMessage("error",
-													  "El usuario no puede ir vacio o con caracteres especiales.",
-													  "Cerrar",
-													  "users");
+												  "El usuario no puede ir vacio o con caracteres especiales.",
+												  "Cerrar",
+												  "users");
 			}
 		}
 	}
@@ -141,7 +165,7 @@ class UsersController{
 
 	static public function ctrSavePhoto($attrPhoto, $attrUserName){
 
-		$url = $_POST["currentPhoto"];
+		$url = isset($_POST["currentPhoto"]) ? $_POST["currentPhoto"] : "";
 
 		if (isset($_FILES[$attrPhoto]["tmp_name"]) && (!empty($_FILES[$attrPhoto]["tmp_name"]))) {
 
