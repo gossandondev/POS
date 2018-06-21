@@ -29,6 +29,7 @@ session_start();
   <!-- DataTables -->
   <link rel="stylesheet" href="Views/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
   <link rel="stylesheet" href="Views/bower_components/datatables.net-bs/css/responsive.bootstrap.min.css">
+  <link rel="stylesheet" href="Views/plugins/iCheck/all.css">
 
   <!-- jQuery 3 -->
   <script src="Views/bower_components/jquery/dist/jquery.min.js"></script>
@@ -48,6 +49,7 @@ session_start();
   <script src="Views/bower_components/datatables.net-bs/js/dataTables.responsive.min.js"></script>
   <script src="Views/bower_components/datatables.net-bs/js/responsive.bootstrap.min.js"></script>
   <script src="Views/plugins/sweetalert2/sweetalert2.all.js"></script>
+  <script src="Views/plugins/iCheck/iCheck.min.js"></script>
 
   <script>
     $(document).ready(function () {
@@ -138,6 +140,8 @@ session_start();
 <script src="Views/js/template.js"></script>
 <script src="Views/js/users.js"></script>
 <script src="Views/js/categories.js"></script>
+<script src="Views/js/products.js"></script>
+
 
 </body>
 </html>

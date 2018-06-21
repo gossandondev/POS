@@ -1,1 +1,2 @@
 1.- Al crear un usuario y le ingreso parametros a los campos, y no guardo el usuario, solo cierro la ventana, al volver apretar el boton nuevo ususario, los datos siguen estando ahi.
+2.- Al iniciar sesion en la pagina, si el usuario viene con un espacio, no manda ningun error o algo.

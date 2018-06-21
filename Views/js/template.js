@@ -1,13 +1,11 @@
 /*=============================================
 SideBar Menu
 =============================================*/
-
 $('.sidebar-menu').tree()
 
 /*=============================================
 Data Table
 =============================================*/
-
 $(".tablesSystem").DataTable({
 
 	"language": {
@@ -38,3 +36,11 @@ $(".tablesSystem").DataTable({
 	}
 
 });
+
+/*=============================================
+iCheck
+=============================================*/
+$('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+	checkboxClass: 'icheckbox_minimal-blue',
+	radioClass   : 'iradio_minimal-blue'
+})
